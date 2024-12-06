@@ -2,6 +2,9 @@ package com.jonah.vttp5_ssf_day09practice.Service;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.StringReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,4 +50,44 @@ public class ToDoRestService {
         }
         System.out.println("added todo file to redis as map");
     }
+
+    public ToDo toDoFromRedis(String mapKey){
+        JsonReader jsonReader = Json.createReader(new StringReader(mapRepo.get(Constants.todoKey, mapKey).toString()));
+        JsonObject toDoJsonObject = jsonReader.readObject();
+        ToDo td = new ToDo();
+
+        //"Sun, 10/22/2024"
+        SimpleDateFormat sdfo =  new SimpleDateFormat("EEE, MM/dd/yyyy");
+
+
+        td.setId(toDoJsonObject.getString("id"));
+        td.setName(toDoJsonObject.getString("name"));
+        td.setDescription(toDoJsonObject.getString("description"));
+        td.setPriority(toDoJsonObject.getString("priority_level"));
+        td.setStatus(toDoJsonObject.getString("status"));
+        try {
+            td.setDueDate(sdfo.parse(toDoJsonObject.getString("due_date")));
+            td.setCreatedAt(sdfo.parse(toDoJsonObject.getString("created_at")));
+            td.setUpdatedAt(sdfo.parse(toDoJsonObject.getString("updated_at")));
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        System.out.println("to do item created from redis:" + td);
+
+        return td;
+
+    }
+
+    public List<ToDo> allToDoFromRedis(String redisKey){
+        List<ToDo> wholeToDoListRedis = new ArrayList<>();
+        for(Object mapKey: mapRepo.getKeys(Constants.todoKey)){
+            wholeToDoListRedis.add(toDoFromRedis(mapKey.toString()));
+        }
+        System.out.println("completed alltodofromredis" + wholeToDoListRedis);
+        return wholeToDoListRedis;
+
+    }
+
+
 }
