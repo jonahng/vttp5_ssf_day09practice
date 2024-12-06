@@ -73,7 +73,7 @@ public class ToDoRestService {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        System.out.println("to do item created from redis:" + td);
+        //System.out.println("to do item created from redis:" + td);
 
         return td;
 
