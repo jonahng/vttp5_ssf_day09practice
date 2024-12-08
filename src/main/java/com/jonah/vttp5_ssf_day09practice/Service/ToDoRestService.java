@@ -3,10 +3,14 @@ package com.jonah.vttp5_ssf_day09practice.Service;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.sql.Date;
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +23,7 @@ import com.jonah.vttp5_ssf_day09practice.Repo.MapRepo;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
 import jakarta.json.JsonReader;
 
 @Service
@@ -88,6 +93,47 @@ public class ToDoRestService {
         return wholeToDoListRedis;
 
     }
+
+    public JsonObject turnToDoJson(ToDo todo){
+
+        JsonObjectBuilder jbBuilder = Json.createObjectBuilder();
+        String uuid = UUID.randomUUID().toString();
+
+        SimpleDateFormat sdfo =  new SimpleDateFormat("EEE, MM/dd/yyyy");
+
+        todo.setId(uuid);
+        jbBuilder.add("id", todo.getId());
+        jbBuilder.add("name",todo.getName());
+        jbBuilder.add("description", todo.getDescription());
+        
+        jbBuilder.add("priority_level", todo.getPriority());
+        jbBuilder.add("status", "test");
+
+        String timeStamp = sdfo.format(Calendar.getInstance().getTime());
+        System.out.println("\n time stamp is =" + timeStamp);
+        jbBuilder.add("due_date",sdfo.format(todo.getDueDate()));
+        System.out.println("\n the due date is =" + sdfo.format(todo.getDueDate()));
+        jbBuilder.add("created_at", timeStamp);
+        jbBuilder.add("updated_at", timeStamp);
+        
+        JsonObject toDoJsonObject = jbBuilder.build();
+        /* JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
+            jsonObjectBuilder.add("id", person.getId());
+            jsonObjectBuilder.add("fullName", person.getFullName());
+            jsonObjectBuilder.add("email", person.getEmail());
+            jsonObjectBuilder.add("phone", person.getPhone());
+            jsonObjectBuilder.add("dob", person.getDob().toString());
+            JsonObject jsonObject = jsonObjectBuilder.build();
+
+ */     return toDoJsonObject;
+    }
+
+    public void addJsonObjectToRedis(JsonObject jsonObject){
+        mapRepo.create(Constants.todoKey, jsonObject.getString("id"), jsonObject.toString());
+        System.out.println("json object added to redis: " + jsonObject.toString());
+    }
+
+
 
 
 }

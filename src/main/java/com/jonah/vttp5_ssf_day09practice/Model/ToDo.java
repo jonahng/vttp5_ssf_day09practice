@@ -22,8 +22,8 @@ public class ToDo {
     @Size(max = 255, message = "max desc 255 characters")
     private String description;
 
-    @Future
-    @DateTimeFormat(pattern = "MM/dd/yyy")
+    
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date dueDate;
 
 
@@ -143,6 +143,12 @@ public class ToDo {
         this.updatedAt = updatedAt;
     }
 
+    
+
+
+
+
+    
 
 
 

@@ -47,7 +47,10 @@ public class ToDoController {
     public String postCreateToDo(@Valid @ModelAttribute("todo") ToDo todo, BindingResult bindingResult, Model model) {
         //TODO: process POST request
 
-        System.out.println(" \n + \n post form received from createTODO.:" + todo.getName() + todo.getDueDate());
+        System.out.println(" \n + \n post form received from createTODO.:" + todo.getName() + "date received is:" + todo.getDueDate() + "whole todo object: " + todo.toString());
+
+        //turning the todo object into json object and adding it to redis.
+        toDoRestService.addJsonObjectToRedis(toDoRestService.turnToDoJson(todo));
 
         //json builder to turn the received person into json object
         //write json object into the redis database susing maprepo?

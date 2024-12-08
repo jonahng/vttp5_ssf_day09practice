@@ -45,8 +45,9 @@
 
           <div class="mb-3">
               <label class="form-label">dueDate</label>
-              <input type="date" class="form-control" name="dueDate" th:field="*{dueDate}" placeholder="dueDate">
+              <input type="date" class="form-control" name="dueDate" th:field="*{dueDate}" placeholder="Insert Due Date">
           </div>
+          <div class="alert alert-danger" th:if="${#fields.hasErrors('dueDate')}" th:errors="*{dueDate}"></div>
 
           <button type="submit" class="btn btn-primary">Submit</button>
       </form>
