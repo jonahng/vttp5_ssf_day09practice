@@ -98,6 +98,12 @@ public class ToDoRestService {
 
     }
 
+
+    public String generateUUID(){
+        String uuid = UUID.randomUUID().toString();
+        return uuid;
+    }
+
     public JsonObject turnToDoJson(ToDo todo){
 
         JsonObjectBuilder jbBuilder = Json.createObjectBuilder();
@@ -147,8 +153,9 @@ public class ToDoRestService {
     public void updateToDoInRedis(ToDo todo){
         
         mapRepo.delete(Constants.todoKey, todo.getId());
-        
-        mapRepo.create(Constants.todoKey, todo.getId(), turnToDoJson(todo).toString());
+        JsonObject todoJsonObject = turnToDoJson(todo);
+        //UUID is automatically created in turntodoJson function
+        mapRepo.create(Constants.todoKey, todoJsonObject.getString("id"), todoJsonObject.toString());
         System.out.println("FOR UPDATING maprepo created: " + todo.getId());
 
 

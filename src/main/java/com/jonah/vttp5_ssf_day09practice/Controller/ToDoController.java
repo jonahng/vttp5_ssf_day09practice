@@ -87,7 +87,12 @@ public class ToDoController {
 
     @GetMapping("/update/{todo-id}")
     public String updateToDo(@PathVariable("todo-id") String toDoId, Model model){
+        if(toDoId.length()<12){
+            return "redirect:/alltodo";
+        }
         System.out.println("update: todo id to update is" + toDoId);
+
+        
         ToDo todo = toDoRestService.toDoFromRedis(toDoId);
         
         System.out.println("to do object received is " + todo.getId() + todo.getName());
@@ -99,9 +104,9 @@ public class ToDoController {
     public String postUpdateForm(@Valid @ModelAttribute("todo") ToDo todo, BindingResult bindingResult, Model model){
         System.out.println("received from post update data");
         if(bindingResult.hasErrors()){
-            System.out.println("errors in bindingresult: " + bindingResult.getErrorCount());
+            System.out.println("errors in bindingresult: " + bindingResult.getErrorCount() +bindingResult.toString());
         }
-        System.out.println("to do data to update" + todo.getId() + todo);
+        System.out.println("to do data to update" + todo.getId() + todo.getName() + todo.getCreatedAt() + todo.getDescription());
         toDoRestService.updateToDoInRedis(todo);
             return "redirect:/alltodo";
  
