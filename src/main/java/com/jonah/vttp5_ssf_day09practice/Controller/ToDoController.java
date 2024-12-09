@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jonah.vttp5_ssf_day09practice.Constants.Constants;
 import com.jonah.vttp5_ssf_day09practice.Model.SessionData;
@@ -87,7 +88,7 @@ public class ToDoController {
         System.out.println("update: todo id to update is" + toDoId);
         ToDo todo = toDoRestService.toDoFromRedis(toDoId);
         
-        System.out.println("to do object received is " + todo.toString());
+        System.out.println("to do object received is " + todo.getId() + todo.getName());
         model.addAttribute("todo",todo);
         return "todoupdate";
     }
