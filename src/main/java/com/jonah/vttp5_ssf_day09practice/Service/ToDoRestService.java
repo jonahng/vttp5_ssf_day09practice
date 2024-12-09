@@ -3,14 +3,18 @@ package com.jonah.vttp5_ssf_day09practice.Service;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.StringReader;
-import java.sql.Date;
+
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
+import javax.print.attribute.standard.MediaSize.ISO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -110,9 +114,9 @@ public class ToDoRestService {
         jbBuilder.add("status", "test");
 
         String timeStamp = sdfo.format(Calendar.getInstance().getTime());
-        System.out.println("\n time stamp is =" + timeStamp);
+
         jbBuilder.add("due_date",sdfo.format(todo.getDueDate()));
-        System.out.println("\n the due date is =" + sdfo.format(todo.getDueDate()));
+
         jbBuilder.add("created_at", timeStamp);
         jbBuilder.add("updated_at", timeStamp);
         
@@ -132,6 +136,44 @@ public class ToDoRestService {
         mapRepo.create(Constants.todoKey, jsonObject.getString("id"), jsonObject.toString());
         System.out.println("json object added to redis: " + jsonObject.toString());
     }
+
+
+    public void deleteToDoFromRedis(String toDoId){
+        mapRepo.delete(Constants.todoKey, toDoId);
+
+        System.out.println("\ndeleted this from redis:" + toDoId);
+    }
+
+    public void updateToDoInRedis(ToDo todo){
+        
+        mapRepo.delete(Constants.todoKey, todo.getId());
+        
+        mapRepo.create(Constants.todoKey, todo.getId(), turnToDoJson(todo).toString());
+        System.out.println("FOR UPDATING maprepo created: " + todo.getId());
+
+
+    }
+
+    public Boolean checkBirthday(String dateString){
+        Date currentDate = new Date();
+        long OneYearmilliseconds = (long) 365 * 24 * 60 * 60 * 1000;
+        Date oneYearEarlier = new Date(currentDate.getTime() - OneYearmilliseconds);
+        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DD");
+        Date birthday = null;
+        try {
+            birthday = sdf.parse(dateString);
+            System.out.println("parsed date! birthday is" + birthday);
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        if(birthday.before(oneYearEarlier )){
+            return true;
+        }
+        return false;
+
+    }
+
 
 
 

@@ -20,6 +20,7 @@
           <h1>LIST OF TO DO</h1>
           <br><br>
           <a class="btn btn-primary" th:href="@{/createtodo}">Create New</a>
+          <a class="btn btn-primary" th:href="@{/sessions/clear}">logout session</a>
           <br/><br/>
           <table class="table table-striped">
               <thead>
@@ -32,6 +33,7 @@
                       <th>status</th>
                       <th>created at</th>
                       <th>updated at</th>
+                      <th>Update/Delete</th>
                   </tr>
               </thead>
               <tbody>
@@ -45,6 +47,8 @@
                           <td th:utext="${td.status}"></td>
                           <td th:utext="${td.createdAt}"></td>
                           <td th:utext="${td.updatedAt}"></td>
+                          <td><a class="btn btn-danger" th:href="@{/delete/{todo-id}(todo-id=${td.id})}">Delete</a>
+                            <a class="btn btn-success" th:href="@{/update/{todo-id}(todo-id=${td.id})}">Edit</a></td>
                       </div>
                       <div th:if="${state.size le 0}">
                           No record found

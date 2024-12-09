@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>My Website</title>
+  </head>
+  <body>
+    
+    <main>
+        <h1>Text</h1>  
+        <p>Text</p>
+
+        <form method="post" th:action="@{/todoupdate}" th:object="${todo}">
+
+          
+          <div class="mb-3">
+              <label class="form-label">Name</label>
+              <input type="text" class="form-control" name="name" th:field="*{name}" placeholder="description">
+          </div>
+
+          <div class="alert alert-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+
+
+
+          <div class="mb-3">
+            <label class="form-label">description</label>
+            <input type="text" class="form-control" name="description" th:field="*{description}" placeholder="description">
+        </div>
+        <div class="alert alert-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+
+
+
+        <div class="mb-3">
+          <label class="form-label">priority</label>
+          <input type="text" class="form-control" name="priority" th:field="*{priority}" placeholder="priority">
+      </div>
+      <div class="alert alert-danger" th:if="${#fields.hasErrors('priority')}" th:errors="*{priority}"></div>
+
+
+
+          <div class="mb-3">
+              <label class="form-label">dueDate</label>
+              <input type="date" class="form-control" name="dueDate" th:field="*{dueDate}" placeholder="Insert Due Date">
+          </div>
+          <div class="alert alert-danger" th:if="${#fields.hasErrors('dueDate')}" th:errors="*{dueDate}"></div>
+
+          <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+
+
+        
+    </main>
+    <script src="index.js"></script>
+  </body>
+</html>
