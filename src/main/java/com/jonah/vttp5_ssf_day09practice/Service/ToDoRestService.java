@@ -42,7 +42,7 @@ public class ToDoRestService {
         InputStream filInputStream = null;
 
         try {
-            filInputStream = new FileInputStream("src\\main\\resources\\todos.json");
+            filInputStream = getClass().getResourceAsStream("/todos.json");
         } catch (Exception e) {
             // TODO: handle exception
         }

@@ -30,5 +30,5 @@ EXPOSE ${SERVER_PORT}
 
 
 #ALWAYS REMEMBER TO CHANGE THE NAME TO CURRENT PROJECT NAME
-ENTRYPOINT SERVER_PORT=${SERVER_PORT} java -jar target/vttp5_ssf_day009practice-0.0.1-SNAPSHOT.jar
+ENTRYPOINT SERVER_PORT=${SERVER_PORT} java -jar target/vttp5_ssf_day09practice-0.0.1-SNAPSHOT.jar
 #NAME comes from the pom.xml artifact id - version .jar

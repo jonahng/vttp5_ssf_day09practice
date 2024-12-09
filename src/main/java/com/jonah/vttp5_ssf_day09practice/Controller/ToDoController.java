@@ -41,6 +41,8 @@ public class ToDoController {
         }
         
         System.out.println("the dob attribute is " + httpSession.getAttribute("dob"));
+
+        //THERE IS A NOT! in the if statement!!!!
         if(! toDoRestService.checkBirthday(httpSession.getAttribute("dob").toString())){
 
             System.out.println("DID NOT PASS THE AGE CHECK, less than 1 year old");
