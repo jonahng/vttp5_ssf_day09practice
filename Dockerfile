@@ -1,34 +1,39 @@
-FROM eclipse-temurin:23-jdk
+FROM openjdk:23-jdk-oracle AS compiler
 
-LABEL MAINTAINER ="jonahng"
-LABEL description ="This is for vttp5_ssf_day09practice"
-LABEL name="vttp5_ssf_day09practice"
+ARG COMPILE_DIR=/code_folder
 
-ARG APP_DIR=/APP_DIR
+WORKDIR ${COMPILE_DIR}
 
-
-#Directory where source code will stay, and where your project will be copied
-WORKDIR ${APP_DIR}
-
-#Copying the required files into the image
 COPY pom.xml .
 COPY mvnw .
 COPY mvnw.cmd .
 COPY src src
 COPY .mvn .mvn
 
+RUN chmod a+x ./mvnw
+RUN ./mvnw clean package -Dmaven.skip.tests=true
 
-#.mvn is a hidden folder that contains necessary things to run maven.
-
-#Package the application using the RUN directive and download the dependencies in POM.xml, then compile into jar
-RUN chmod a+x ./mvnw && ./mvnw clean package -Dmaven.test.skip=true
-#CHANGE LINE FORMATTING IN MVNW to LF from crlf
-
-ENV SERVER_PORT 3000
+ENV SERVER_PORT=3000
 
 EXPOSE ${SERVER_PORT}
 
+# ENTRYPOINT ./mvnw spring-boot:RUN
+ENTRYPOINT ["java", "-jar", "target/vttp5-ssf-day09practice-0.0.1-SNAPSHOT.jar"]
 
-#ALWAYS REMEMBER TO CHANGE THE NAME TO CURRENT PROJECT NAME
-ENTRYPOINT SERVER_PORT=${SERVER_PORT} java -jar target/vttp5_ssf_day09practice-0.0.1-SNAPSHOT.jar
-#NAME comes from the pom.xml artifact id - version .jar
+# stage 2
+FROM openjdk:23-jdk-oracle
+
+ARG DEPLOY_DIR=/app
+
+WORKDIR ${DEPLOY_DIR}
+
+COPY --from=compiler /code_folder/target/vttp5-ssf-day09practice-0.0.1-SNAPSHOT.jar vttp5-ssf-day09practice-0.0.1-SNAPSHOT.jar
+
+ENV SERVER_PORT=3000
+
+EXPOSE ${SERVER_PORT}
+
+#This is to do healtchcheck
+#HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD [ "http://localhost:3000/demo/health" ] || exit 1
+
+ENTRYPOINT ["java", "-jar", "vttp5-ssf-day09practice-0.0.1-SNAPSHOT.jar"]
