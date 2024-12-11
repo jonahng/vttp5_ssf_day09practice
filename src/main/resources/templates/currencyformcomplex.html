@@ -28,10 +28,16 @@
           </div>
 
 
-          <div class="mb-3">
+          <!-- <div class="mb-3">
             <label class="form-label">convertedCurrency</label>
             <input type="text" class="form-control" name="convertedCurrency" th:field="*{convertedCurrency}" placeholder="convertedCurrrency">
-        </div>
+        </div> -->
+
+        <label class="form-label">convertedCurrency</label>
+    <div th:each="currencyKey : ${currencyConversionForm.currencyKeys}">
+      <input name="convertedCurrency" type="radio" th:value="${currencyKey}"/><label for="currencyKey" th:text="| &nbsp; ${currencyKey} |">Something is wrong !</label>
+    </div>
+
 
 
         <div class="mb-3">
@@ -44,6 +50,9 @@
         <input type="checkbox" name="checkbox" th:checked="*{checkbox}">
     </div>
 
+
+
+    
 
           <button type="submit" class="btn btn-primary">Submit</button>
       </form>
