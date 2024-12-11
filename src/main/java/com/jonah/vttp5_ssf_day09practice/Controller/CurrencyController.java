@@ -28,7 +28,7 @@ public class CurrencyController {
         model.addAttribute("currencyConversionForm", currencyConversionForm);
         //model.addAttribute("currencyKeys", currencyKeys);
 
-        return "currencyform";
+        return "currencyformcomplex";
     }
 
 
@@ -41,9 +41,16 @@ public class CurrencyController {
         String starterCurrency = formEntity.getFirst("starterCurrency");
         String convertedCurrency = formEntity.getFirst("convertedCurrency");
         Double amountToConvert = Double.parseDouble(formEntity.getFirst("amountToConvert"));
+        String checkboxAnswer = formEntity.getFirst("checkbox");
+        if(checkboxAnswer == null){
+            System.out.println("checkbox is not checked!");
+        }else{
+            System.out.println("checkbox is checked! ticked");
+        }
+        
         //Long amountToConvert = formEntity.getFirst("amountToConvert");
         //Long amountToConvert = Long.parseLong(formEntity.getFirst("amountToConvert"));
-        System.out.println("data received from form is: " + starterCurrency + convertedCurrency + amountToConvert);
+        System.out.println("data received from form is: " + starterCurrency + convertedCurrency + amountToConvert + "checkbox answer" + checkboxAnswer);
         Double conversionRate = currencyRestService.callAPI(starterCurrency, convertedCurrency);
         Double amountOfFinalCurrency = amountToConvert*conversionRate;
 

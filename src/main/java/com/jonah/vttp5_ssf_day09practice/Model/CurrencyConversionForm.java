@@ -9,6 +9,7 @@ public class CurrencyConversionForm {
     private Long amountToConvert;
     private Long convertedAmount;
     private Set<String> currencyKeys;
+    private Boolean checkbox;
 
     
     public CurrencyConversionForm() {
@@ -16,12 +17,13 @@ public class CurrencyConversionForm {
     
 
     public CurrencyConversionForm(String starterCurrency, String convertedCurrency, Long amountToConvert,
-            Long convertedAmount, Set<String> currencyKeys) {
+            Long convertedAmount, Set<String> currencyKeys, Boolean checkbox) {
         this.starterCurrency = starterCurrency;
         this.convertedCurrency = convertedCurrency;
         this.amountToConvert = amountToConvert;
         this.convertedAmount = convertedAmount;
         this.currencyKeys = currencyKeys;
+        this.checkbox = checkbox;
     }
 
 
@@ -75,6 +77,16 @@ public class CurrencyConversionForm {
     }
 
 
+    public Boolean getCheckbox() {
+        return checkbox;
+    }
+
+
+    public void setCheckbox(Boolean checkbox) {
+        this.checkbox = checkbox;
+    }
+
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -84,6 +96,7 @@ public class CurrencyConversionForm {
         result = prime * result + ((amountToConvert == null) ? 0 : amountToConvert.hashCode());
         result = prime * result + ((convertedAmount == null) ? 0 : convertedAmount.hashCode());
         result = prime * result + ((currencyKeys == null) ? 0 : currencyKeys.hashCode());
+        result = prime * result + ((checkbox == null) ? 0 : checkbox.hashCode());
         return result;
     }
 
@@ -122,9 +135,16 @@ public class CurrencyConversionForm {
                 return false;
         } else if (!currencyKeys.equals(other.currencyKeys))
             return false;
+        if (checkbox == null) {
+            if (other.checkbox != null)
+                return false;
+        } else if (!checkbox.equals(other.checkbox))
+            return false;
         return true;
     }
 
+
+    
     
     
     
