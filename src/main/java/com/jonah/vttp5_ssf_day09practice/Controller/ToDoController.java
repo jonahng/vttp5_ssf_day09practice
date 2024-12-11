@@ -66,6 +66,10 @@ public class ToDoController {
     @PostMapping("/createtodo")
     public String postCreateToDo(@Valid @ModelAttribute("todo") ToDo todo, BindingResult bindingResult, Model model) {
         //TODO: process POST request
+        if(bindingResult.hasErrors()){
+            System.out.println("binding result has errors" + bindingResult.getErrorCount() +bindingResult.toString());
+            return "createtodoform";
+        }
 
         System.out.println(" \n + \n post form received from createTODO.:" + todo.getName() + "date received is:" + todo.getDueDate() + "whole todo object: " + todo.toString());
 

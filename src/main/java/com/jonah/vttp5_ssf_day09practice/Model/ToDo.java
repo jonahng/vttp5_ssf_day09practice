@@ -11,15 +11,14 @@ import jakarta.validation.constraints.Size;
 
 public class ToDo {
     
-    @NotEmpty(message = "id")
-    @Size(max = 50, message = "id max length 50")
+    
     private String id;
 
     @NotEmpty(message = "full name required")
     @Size(min = 3, max = 50, message = "full name 3 to 50 chars")
     private String name;
 
-    @Size(max = 255, message = "max desc 255 characters")
+    @Size(min = 3, max = 255, message = "max desc 255 characters")
     private String description;
 
     
