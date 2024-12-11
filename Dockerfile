@@ -26,6 +26,11 @@ COPY --from=builder /src/target/vttp5_ssf_day09practice-0.0.1-SNAPSHOT.jar app.j
 #the /src at the start is the workdir that was declared in the first stage
 
 
+#FOR HEALTHCHECK NEED THIS CURL COMMAND
+#RUN apt update && apt install -y curl
+
+
+
 #!!!
 #NOT SURE ABOUT THIS PORT ONE!!!!!!MAYBE go bak to the simple port method in darryl example.
 #!!!!!!!!!!!!!! THIS IS CHUK CODE
@@ -40,6 +45,12 @@ ENV MY_API_KEY=randomkey
 ENV SERVER_PORT 3000
 EXPOSE ${SERVER_PORT}
 #ALWAYS REMEMBER TO CHANGE THE NAME TO CURRENT PROJECT NAME
+
+
+
+#CODE FOR HEALTHCHECK IF NEEDED
+#HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 CMD curl -f -s http://localhost:${SERVER_PORT}/health || exit 1
+
 ENTRYPOINT SERVER_PORT=${SERVER_PORT} java -jar app.jar
 
 
